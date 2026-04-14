@@ -1,6 +1,8 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { catalogoService } from '@/services/catalogoService'
 import type { Database } from '@/types/database'
+import type { PrefillData } from '@/lib/prefill'
+import { prefillSimpleFields } from '@/lib/prefill'
 
 type Marca = Database['reserva_hotel']['Tables']['marcas']['Row']
 type Unidade = Database['reserva_hotel']['Tables']['unidades']['Row']
@@ -33,14 +35,20 @@ const empty: ReservationFormState = {
   observacao: '',
 }
 
-export function useReservationForm() {
-  const [form, setForm] = useState<ReservationFormState>(empty)
+export function useReservationForm(initialPrefill?: PrefillData) {
+  const [form, setForm] = useState<ReservationFormState>(() => ({
+    ...empty,
+    ...prefillSimpleFields(initialPrefill ?? {}),
+  }))
   const [marcas, setMarcas] = useState<Marca[]>([])
   const [unidades, setUnidades] = useState<Unidade[]>([])
   const [preco, setPreco] = useState<Preco | null>(null)
   const [fotos, setFotos] = useState<Foto[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const marcaPrefillAppliedRef = useRef(false)
+  const unidadePrefillAppliedRef = useRef(false)
 
   useEffect(() => {
     catalogoService
@@ -81,6 +89,42 @@ export function useReservationForm() {
       .then(setFotos)
       .catch((err: Error) => setError(err.message))
   }, [form.unidadeId, form.categoria])
+
+  // Resolve prefill: marcaNome -> marcaId quando marcas carregam
+  useEffect(() => {
+    if (marcaPrefillAppliedRef.current) return
+    if (!initialPrefill?.marcaNome) return
+    if (marcas.length === 0) return
+
+    const marca = marcas.find(
+      (m) => m.nome.toLowerCase() === initialPrefill.marcaNome!.toLowerCase()
+    )
+    if (marca) {
+      // Usa setForm direto pra NÃO disparar o reset em cascata do update()
+      setForm((prev) => ({ ...prev, marcaId: marca.id }))
+    }
+    marcaPrefillAppliedRef.current = true
+  }, [marcas, initialPrefill])
+
+  // Resolve prefill: unidadeNome -> unidadeId + seta categoria/permanencia quando unidades carregam
+  useEffect(() => {
+    if (unidadePrefillAppliedRef.current) return
+    if (!initialPrefill?.unidadeNome) return
+    if (unidades.length === 0) return
+
+    const unidade = unidades.find(
+      (u) => u.nome.toLowerCase() === initialPrefill.unidadeNome!.toLowerCase()
+    )
+    if (unidade) {
+      setForm((prev) => ({
+        ...prev,
+        unidadeId: unidade.id,
+        permanencia: initialPrefill.permanencia ?? prev.permanencia,
+        categoria: initialPrefill.categoria ?? prev.categoria,
+      }))
+    }
+    unidadePrefillAppliedRef.current = true
+  }, [unidades, initialPrefill])
 
   const update = useCallback(<K extends keyof ReservationFormState>(
     key: K,
