@@ -12,7 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "supabase:types": "supabase gen types typescript --linked --schema reserva_hotel > src/types/database.ts"
+    "supabase:types": "supabase gen types typescript --project-id acdvblhzzaneddlxqyst --schema reserva_hotel > src/types/database.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",
