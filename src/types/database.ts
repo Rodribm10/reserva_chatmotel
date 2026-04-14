@@ -14,6 +14,77 @@ export type Database = {
   }
   reserva_hotel: {
     Tables: {
+      app_config: {
+        Row: {
+          cor_fundo: string
+          cor_primaria: string
+          cor_secundaria: string
+          cor_superficie: string
+          cor_texto: string
+          created_at: string
+          favicon_url: string | null
+          fonte_corpo: string
+          fonte_display: string
+          footer_text: string | null
+          id: number
+          logo_url: string | null
+          nome_rede: string
+          subtitulo_hero: string | null
+          tagline: string | null
+          tenant_id: number
+          titulo_hero: string
+          updated_at: string
+        }
+        Insert: {
+          cor_fundo?: string
+          cor_primaria?: string
+          cor_secundaria?: string
+          cor_superficie?: string
+          cor_texto?: string
+          created_at?: string
+          favicon_url?: string | null
+          fonte_corpo?: string
+          fonte_display?: string
+          footer_text?: string | null
+          id?: number
+          logo_url?: string | null
+          nome_rede: string
+          subtitulo_hero?: string | null
+          tagline?: string | null
+          tenant_id: number
+          titulo_hero: string
+          updated_at?: string
+        }
+        Update: {
+          cor_fundo?: string
+          cor_primaria?: string
+          cor_secundaria?: string
+          cor_superficie?: string
+          cor_texto?: string
+          created_at?: string
+          favicon_url?: string | null
+          fonte_corpo?: string
+          fonte_display?: string
+          footer_text?: string | null
+          id?: number
+          logo_url?: string | null
+          nome_rede?: string
+          subtitulo_hero?: string | null
+          tagline?: string | null
+          tenant_id?: number
+          titulo_hero?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_config_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: true
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contas_pagamento: {
         Row: {
           ativa: boolean | null
@@ -26,6 +97,7 @@ export type Database = {
           nome_identificacao: string
           path_crt: string | null
           path_key: string | null
+          tenant_id: number
           updated_at: string | null
         }
         Insert: {
@@ -39,6 +111,7 @@ export type Database = {
           nome_identificacao: string
           path_crt?: string | null
           path_key?: string | null
+          tenant_id: number
           updated_at?: string | null
         }
         Update: {
@@ -52,9 +125,18 @@ export type Database = {
           nome_identificacao?: string
           path_crt?: string | null
           path_key?: string | null
+          tenant_id?: number
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "contas_pagamento_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       extras: {
         Row: {
@@ -66,6 +148,7 @@ export type Database = {
           imagem_url: string | null
           ordem: number
           preco: number
+          tenant_id: number
           titulo: string
           updated_at: string
         }
@@ -78,6 +161,7 @@ export type Database = {
           imagem_url?: string | null
           ordem?: number
           preco: number
+          tenant_id: number
           titulo: string
           updated_at?: string
         }
@@ -90,6 +174,7 @@ export type Database = {
           imagem_url?: string | null
           ordem?: number
           preco?: number
+          tenant_id?: number
           titulo?: string
           updated_at?: string
         }
@@ -99,6 +184,13 @@ export type Database = {
             columns: ["id_marca"]
             isOneToOne: false
             referencedRelation: "marcas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "extras_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
         ]
@@ -112,6 +204,7 @@ export type Database = {
           id: string
           id_unidade: string
           ordem: number
+          tenant_id: number
           updated_at: string
           url_foto: string
         }
@@ -123,6 +216,7 @@ export type Database = {
           id?: string
           id_unidade: string
           ordem?: number
+          tenant_id: number
           updated_at?: string
           url_foto: string
         }
@@ -134,6 +228,7 @@ export type Database = {
           id?: string
           id_unidade?: string
           ordem?: number
+          tenant_id?: number
           updated_at?: string
           url_foto?: string
         }
@@ -143,6 +238,13 @@ export type Database = {
             columns: ["id_unidade"]
             isOneToOne: false
             referencedRelation: "unidades"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fotos_categoria_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
         ]
@@ -156,6 +258,7 @@ export type Database = {
           id: string
           nome: string
           permanencias: string[]
+          tenant_id: number
           updated_at: string | null
         }
         Insert: {
@@ -166,6 +269,7 @@ export type Database = {
           id?: string
           nome: string
           permanencias?: string[]
+          tenant_id: number
           updated_at?: string | null
         }
         Update: {
@@ -176,9 +280,18 @@ export type Database = {
           id?: string
           nome?: string
           permanencias?: string[]
+          tenant_id?: number
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "marcas_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       precos: {
         Row: {
@@ -190,6 +303,7 @@ export type Database = {
           id_marca: string
           periodo_semana: string
           permanencia: string
+          tenant_id: number
           updated_at: string | null
           valor: number
         }
@@ -202,6 +316,7 @@ export type Database = {
           id_marca: string
           periodo_semana?: string
           permanencia: string
+          tenant_id: number
           updated_at?: string | null
           valor: number
         }
@@ -214,6 +329,7 @@ export type Database = {
           id_marca?: string
           periodo_semana?: string
           permanencia?: string
+          tenant_id?: number
           updated_at?: string | null
           valor?: number
         }
@@ -223,6 +339,13 @@ export type Database = {
             columns: ["id_marca"]
             isOneToOne: false
             referencedRelation: "marcas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "precos_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
         ]
@@ -292,6 +415,7 @@ export type Database = {
           qr_code_pix: string | null
           status: string
           telefone_cliente: string | null
+          tenant_id: number
           tipo_permanencia: string
           txid_pix: string | null
           updated_at: string | null
@@ -319,6 +443,7 @@ export type Database = {
           qr_code_pix?: string | null
           status?: string
           telefone_cliente?: string | null
+          tenant_id: number
           tipo_permanencia: string
           txid_pix?: string | null
           updated_at?: string | null
@@ -346,6 +471,7 @@ export type Database = {
           qr_code_pix?: string | null
           status?: string
           telefone_cliente?: string | null
+          tenant_id?: number
           tipo_permanencia?: string
           txid_pix?: string | null
           updated_at?: string | null
@@ -367,6 +493,13 @@ export type Database = {
             referencedRelation: "unidades"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "reservas_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
         ]
       }
       suites: {
@@ -380,6 +513,7 @@ export type Database = {
           id_api: string | null
           nome: string
           numero: string | null
+          tenant_id: number
           updated_at: string | null
         }
         Insert: {
@@ -392,6 +526,7 @@ export type Database = {
           id_api?: string | null
           nome: string
           numero?: string | null
+          tenant_id: number
           updated_at?: string | null
         }
         Update: {
@@ -404,9 +539,18 @@ export type Database = {
           id_api?: string | null
           nome?: string
           numero?: string | null
+          tenant_id?: number
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "suites_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       suites_unidades: {
         Row: {
@@ -444,6 +588,33 @@ export type Database = {
           },
         ]
       }
+      tenants: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          id: number
+          nome: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          id?: number
+          nome: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          id?: number
+          nome?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       unidades: {
         Row: {
           ativa: boolean | null
@@ -457,6 +628,7 @@ export type Database = {
           id_marca: string
           nome: string
           telefone: string | null
+          tenant_id: number
           updated_at: string | null
         }
         Insert: {
@@ -471,6 +643,7 @@ export type Database = {
           id_marca: string
           nome: string
           telefone?: string | null
+          tenant_id: number
           updated_at?: string | null
         }
         Update: {
@@ -485,6 +658,7 @@ export type Database = {
           id_marca?: string
           nome?: string
           telefone?: string | null
+          tenant_id?: number
           updated_at?: string | null
         }
         Relationships: [
@@ -500,6 +674,13 @@ export type Database = {
             columns: ["id_marca"]
             isOneToOne: false
             referencedRelation: "marcas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unidades_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
         ]
@@ -720,3 +901,5 @@ export const Constants = {
     Enums: {},
   },
 } as const
+A new version of Supabase CLI is available: v2.90.0 (currently installed v2.48.3)
+We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
