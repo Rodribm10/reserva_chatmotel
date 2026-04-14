@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import { useReservationForm } from '@/hooks/useReservationForm'
+import { parsePrefillFromURL } from '@/lib/prefill'
+
+// Captura prefill UMA vez no boot (módulo). Evita re-parse a cada render.
+const initialPrefill = parsePrefillFromURL()
 import { chatwootApi, type CreateReservationResponse } from '@/lib/chatwootApi'
 import { onlyDigits } from '@/lib/formatters'
 import { StayDetailsStep } from './StayDetailsStep'
@@ -24,7 +28,7 @@ export function ReservationFlow() {
     fotos,
     canSubmit,
     reset,
-  } = useReservationForm()
+  } = useReservationForm(initialPrefill)
 
   const [phase, setPhase] = useState<Phase>('form')
   const [submitting, setSubmitting] = useState(false)
