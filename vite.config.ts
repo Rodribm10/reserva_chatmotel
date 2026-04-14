@@ -10,6 +10,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    port: 5180,
+    strictPort: true,
+  },
+  preview: {
+    port: 5180,
+    strictPort: true,
+  },
   test: {
     environment: 'jsdom',
     globals: true,
