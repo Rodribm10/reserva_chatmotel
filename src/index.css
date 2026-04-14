@@ -1,0 +1,58 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Paleta premium Reserva 1001 */
+  --color-obsidian: #0b0d12;
+  --color-midnight: #0f1a2e;
+  --color-champagne: #c9a961;
+  --color-rose-gold: #e8b4a0;
+  --color-ivory: #f5f1e8;
+  --color-slate: #6b7280;
+  --color-emerald: #10b981;
+  --color-ruby: #e11d48;
+
+  /* Tipografia */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Fraunces', Georgia, serif;
+
+  /* Raios */
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: linear-gradient(180deg, var(--color-obsidian) 0%, var(--color-midnight) 100%);
+    color: var(--color-ivory);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    background: linear-gradient(135deg, var(--color-champagne), var(--color-rose-gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glow-champagne {
+    box-shadow: 0 0 30px rgba(201, 169, 97, 0.4);
+  }
+}
