@@ -1,0 +1,6 @@
+{
+  "name": "Hotel 1001 Noites Prime - Reserva",
+  "description": "Um formulário de reserva para o Hotel 1001 Noites Prime Águas Claras. Permite aos usuários inserir seus dados, data de check-in e enviar a reserva.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
