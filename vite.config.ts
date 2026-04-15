@@ -13,10 +13,15 @@ export default defineConfig({
   server: {
     port: 5180,
     strictPort: true,
+    host: true,
+    // Aceita qualquer host — usado quando rodamos atrás de um tunnel (loca.lt, ngrok, cloudflared)
+    allowedHosts: true,
   },
   preview: {
     port: 5180,
     strictPort: true,
+    host: true,
+    allowedHosts: true,
   },
   test: {
     environment: 'jsdom',

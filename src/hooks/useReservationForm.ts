@@ -3,6 +3,7 @@ import { catalogoService } from '@/services/catalogoService'
 import type { Database } from '@/types/database'
 import type { PrefillData } from '@/lib/prefill'
 import { prefillSimpleFields } from '@/lib/prefill'
+import { useTenantId } from '@/hooks/useAppConfig'
 
 type Marca = Database['reserva_hotel']['Tables']['marcas']['Row']
 type Unidade = Database['reserva_hotel']['Tables']['unidades']['Row']
@@ -36,6 +37,8 @@ const empty: ReservationFormState = {
 }
 
 export function useReservationForm(initialPrefill?: PrefillData) {
+  const tenantId = useTenantId()
+
   const [form, setForm] = useState<ReservationFormState>(() => ({
     ...empty,
     ...prefillSimpleFields(initialPrefill ?? {}),
@@ -51,44 +54,48 @@ export function useReservationForm(initialPrefill?: PrefillData) {
   const unidadePrefillAppliedRef = useRef(false)
 
   useEffect(() => {
+    if (!tenantId) return
     catalogoService
-      .listMarcas()
+      .listMarcas(tenantId)
       .then(setMarcas)
       .catch((err: Error) => setError(err.message))
-  }, [])
+  }, [tenantId])
 
   useEffect(() => {
+    if (!tenantId) return
     if (!form.marcaId) {
       setUnidades([])
       return
     }
     catalogoService
-      .listUnidades(form.marcaId)
+      .listUnidades(tenantId, form.marcaId)
       .then(setUnidades)
       .catch((err: Error) => setError(err.message))
-  }, [form.marcaId])
+  }, [tenantId, form.marcaId])
 
   useEffect(() => {
+    if (!tenantId) return
     if (!form.marcaId || !form.categoria || !form.permanencia) {
       setPreco(null)
       return
     }
     catalogoService
-      .findPreco(form.marcaId, form.categoria, form.permanencia)
+      .findPreco(tenantId, form.marcaId, form.categoria, form.permanencia)
       .then(setPreco)
       .catch((err: Error) => setError(err.message))
-  }, [form.marcaId, form.categoria, form.permanencia])
+  }, [tenantId, form.marcaId, form.categoria, form.permanencia])
 
   useEffect(() => {
+    if (!tenantId) return
     if (!form.unidadeId || !form.categoria) {
       setFotos([])
       return
     }
     catalogoService
-      .listFotos(form.unidadeId, form.categoria)
+      .listFotos(tenantId, form.unidadeId, form.categoria)
       .then(setFotos)
       .catch((err: Error) => setError(err.message))
-  }, [form.unidadeId, form.categoria])
+  }, [tenantId, form.unidadeId, form.categoria])
 
   // Resolve prefill: marcaNome -> marcaId quando marcas carregam
   useEffect(() => {

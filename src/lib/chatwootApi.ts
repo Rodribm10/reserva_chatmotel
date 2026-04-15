@@ -43,6 +43,8 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
     headers: {
       'Content-Type': 'application/json',
       'X-Reserva-Token': API_TOKEN,
+      // Pula a pagina de aviso do ngrok quando o chatwoot esta atras do tunnel
+      'ngrok-skip-browser-warning': 'true',
       ...(init.headers ?? {}),
     },
   })

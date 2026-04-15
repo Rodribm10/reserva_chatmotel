@@ -8,20 +8,22 @@ type Foto = Database['reserva_hotel']['Tables']['fotos_categoria']['Row']
 type Extra = Database['reserva_hotel']['Tables']['extras']['Row']
 
 export const catalogoService = {
-  async listMarcas(): Promise<Marca[]> {
+  async listMarcas(tenantId: number): Promise<Marca[]> {
     const { data, error } = await supabase
       .from('marcas')
       .select('*')
+      .eq('tenant_id', tenantId)
       .eq('ativa', true)
       .order('nome')
     if (error) throw new Error(error.message)
     return data ?? []
   },
 
-  async listUnidades(marcaId: string): Promise<Unidade[]> {
+  async listUnidades(tenantId: number, marcaId: string): Promise<Unidade[]> {
     const { data, error } = await supabase
       .from('unidades')
       .select('*')
+      .eq('tenant_id', tenantId)
       .eq('id_marca', marcaId)
       .eq('ativa', true)
       .order('nome')
@@ -30,6 +32,7 @@ export const catalogoService = {
   },
 
   async findPreco(
+    tenantId: number,
     marcaId: string,
     categoria: string,
     permanencia: string,
@@ -38,6 +41,7 @@ export const catalogoService = {
     const { data, error } = await supabase
       .from('precos')
       .select('*')
+      .eq('tenant_id', tenantId)
       .eq('id_marca', marcaId)
       .eq('categoria', categoria)
       .eq('permanencia', permanencia)
@@ -48,10 +52,11 @@ export const catalogoService = {
     return data
   },
 
-  async listFotos(unidadeId: string, categoria: string): Promise<Foto[]> {
+  async listFotos(tenantId: number, unidadeId: string, categoria: string): Promise<Foto[]> {
     const { data, error } = await supabase
       .from('fotos_categoria')
       .select('*')
+      .eq('tenant_id', tenantId)
       .eq('id_unidade', unidadeId)
       .eq('categoria', categoria)
       .eq('ativa', true)
@@ -60,10 +65,11 @@ export const catalogoService = {
     return data ?? []
   },
 
-  async listExtras(marcaId: string): Promise<Extra[]> {
+  async listExtras(tenantId: number, marcaId: string): Promise<Extra[]> {
     const { data, error } = await supabase
       .from('extras')
       .select('*')
+      .eq('tenant_id', tenantId)
       .eq('id_marca', marcaId)
       .eq('ativo', true)
       .order('ordem')
