@@ -7,6 +7,11 @@ const TABS = [
   { to: 'aparencia', label: 'Aparência' },
   { to: 'marcas', label: 'Marcas' },
   { to: 'unidades', label: 'Unidades' },
+  { to: 'categorias', label: 'Categorias' },
+  { to: 'precos', label: 'Preços' },
+  { to: 'fotos', label: 'Fotos' },
+  { to: 'extras', label: 'Extras' },
+  { to: 'reservas', label: 'Reservas' },
 ]
 
 export function AdminLayout() {
