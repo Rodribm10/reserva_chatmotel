@@ -3,7 +3,11 @@ import { AuthGate } from '@/components/admin/AuthGate'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 
-const TABS = [{ to: 'aparencia', label: 'Aparência' }]
+const TABS = [
+  { to: 'aparencia', label: 'Aparência' },
+  { to: 'marcas', label: 'Marcas' },
+  { to: 'unidades', label: 'Unidades' },
+]
 
 export function AdminLayout() {
   const { user, signOut } = useAuth()

@@ -3,6 +3,8 @@ import ReservationPage from '@/pages/ReservationPage'
 import { LoginPage } from '@/pages/admin/LoginPage'
 import { AdminLayout } from '@/pages/admin/AdminLayout'
 import { AparenciaTab } from '@/pages/admin/AparenciaTab'
+import { MarcasTab } from '@/pages/admin/MarcasTab'
+import { UnidadesTab } from '@/pages/admin/UnidadesTab'
 
 const router = createBrowserRouter([
   { path: '/', element: <ReservationPage /> },
@@ -13,6 +15,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="aparencia" replace /> },
       { path: 'aparencia', element: <AparenciaTab /> },
+      { path: 'marcas', element: <MarcasTab /> },
+      { path: 'unidades', element: <UnidadesTab /> },
     ],
   },
 ])
