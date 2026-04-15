@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+import { animate } from 'animejs'
 import { formatBRL } from '@/lib/formatters'
 
 interface Props {
@@ -6,11 +8,21 @@ interface Props {
 }
 
 export function PriceSummary({ totalCents, depositCents }: Props) {
+  const ref = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    if (!ref.current || totalCents === 0) return
+    animate(ref.current, { scale: [1, 1.06, 1], duration: 400, easing: 'easeOutQuad' })
+  }, [totalCents])
+
   if (totalCents === 0) return null
   const restante = totalCents - depositCents
 
   return (
-    <section className="rounded-2xl border border-champagne/30 bg-midnight/60 p-6 backdrop-blur">
+    <section
+      ref={ref}
+      className="rounded-2xl border border-champagne/30 bg-midnight/60 p-6 backdrop-blur"
+    >
       <div className="flex items-baseline justify-between mb-3">
         <span className="text-slate text-sm uppercase tracking-widest">Preço estimado</span>
         <span className="font-serif text-3xl text-champagne">{formatBRL(totalCents)}</span>

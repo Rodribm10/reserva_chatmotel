@@ -1,4 +1,5 @@
 import { ReservationFlow } from '@/components/reservation/ReservationFlow'
+import { HeroSection } from '@/components/reservation/HeroSection'
 import { useTenant } from '@/contexts/TenantProvider'
 import { useAppConfig } from '@/hooks/useAppConfig'
 
@@ -26,19 +27,7 @@ export default function ReservationPage() {
 
   return (
     <main className="min-h-screen flex flex-col items-center px-6 py-12">
-      <header className="text-center mb-10">
-        {config.subtitulo_hero && (
-          <p className="font-sans text-sm uppercase tracking-[0.3em] text-rose-gold mb-4">
-            {config.subtitulo_hero}
-          </p>
-        )}
-        <h1 className="font-serif text-5xl md:text-6xl text-gradient-gold mb-3">
-          {config.titulo_hero}
-        </h1>
-        {config.tagline && (
-          <p className="font-sans text-slate text-lg">{config.tagline}</p>
-        )}
-      </header>
+      <HeroSection config={config} />
 
       <ReservationFlow />
 

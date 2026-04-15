@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
+import { motion } from 'motion/react'
 import { chatwootApi, type CreateReservationResponse } from '@/lib/chatwootApi'
 import { Button } from '@/components/ui/button'
 import { formatBRL } from '@/lib/formatters'
@@ -56,9 +57,19 @@ export function PixCheckout({ reservation, depositCents, onPaid, onCancel }: Pro
         <p className="mt-1 text-sm text-slate">{statusMsg}</p>
       </header>
 
-      <div className="mx-auto flex w-fit items-center justify-center rounded-xl border border-champagne/40 bg-ivory p-4 glow-champagne">
+      <motion.div
+        className="mx-auto flex w-fit items-center justify-center rounded-xl border border-champagne/40 bg-ivory p-4"
+        animate={{
+          boxShadow: [
+            '0 0 30px rgba(201, 169, 97, 0.4)',
+            '0 0 60px rgba(201, 169, 97, 0.7)',
+            '0 0 30px rgba(201, 169, 97, 0.4)',
+          ],
+        }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+      >
         <QRCodeSVG value={reservation.pix.copia_e_cola} size={220} level="M" />
-      </div>
+      </motion.div>
 
       <div>
         <label className="text-xs uppercase tracking-widest text-champagne">
