@@ -82,7 +82,7 @@ vi.mock('@/hooks/useReservationForm', () => ({
   }),
 }))
 
-import App from '@/App'
+import App from '@/pages/ReservationPage'
 
 describe('App', () => {
   it('renderiza o titulo premium', () => {

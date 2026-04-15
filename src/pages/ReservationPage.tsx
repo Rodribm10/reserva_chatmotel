@@ -2,7 +2,7 @@ import { ReservationFlow } from '@/components/reservation/ReservationFlow'
 import { useTenant } from '@/contexts/TenantProvider'
 import { useAppConfig } from '@/hooks/useAppConfig'
 
-export default function App() {
+export default function ReservationPage() {
   const { loading, error } = useTenant()
   const config = useAppConfig()
 
