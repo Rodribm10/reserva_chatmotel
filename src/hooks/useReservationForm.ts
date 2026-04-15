@@ -74,16 +74,35 @@ export function useReservationForm(initialPrefill?: PrefillData) {
   }, [tenantId, form.marcaId])
 
   useEffect(() => {
-    if (!tenantId) return
-    if (!form.marcaId || !form.categoria || !form.permanencia) {
+    if (!tenantId || !form.marcaId || !form.categoria || !form.permanencia) {
       setPreco(null)
       return
     }
-    catalogoService
-      .findPreco(tenantId, form.marcaId, form.categoria, form.permanencia)
-      .then(setPreco)
-      .catch((err: Error) => setError(err.message))
-  }, [tenantId, form.marcaId, form.categoria, form.permanencia])
+    const fetchPreco = async () => {
+      try {
+        const checkinDate = form.checkinAt ? new Date(form.checkinAt) : null
+        const p =
+          checkinDate && !isNaN(checkinDate.getTime())
+            ? await catalogoService.findPrecoForDate(
+                tenantId,
+                form.marcaId,
+                form.categoria,
+                form.permanencia,
+                checkinDate
+              )
+            : await catalogoService.findPreco(
+                tenantId,
+                form.marcaId,
+                form.categoria,
+                form.permanencia
+              )
+        setPreco(p)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Erro ao carregar preço')
+      }
+    }
+    void fetchPreco()
+  }, [tenantId, form.marcaId, form.categoria, form.permanencia, form.checkinAt])
 
   useEffect(() => {
     if (!tenantId) return

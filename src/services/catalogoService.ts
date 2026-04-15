@@ -52,6 +52,44 @@ export const catalogoService = {
     return data
   },
 
+  async findPrecoForDate(
+    tenantId: number,
+    marcaId: string,
+    categoria: string,
+    permanencia: string,
+    checkinDate: Date
+  ): Promise<Preco | null> {
+    const dayOfWeek = checkinDate.getDay() // 0=dom..6=sab
+
+    // Resolve o periodo que contem esse dia
+    const { data: periodos } = await supabase
+      .from('marca_periodos')
+      .select('*')
+      .eq('id_marca', marcaId)
+      .eq('ativo', true)
+      .order('ordem')
+
+    const matched = (periodos ?? []).find(
+      (p) => Array.isArray(p.dias) && p.dias.includes(dayOfWeek)
+    )
+
+    const slug = matched?.slug ?? 'default'
+
+    const { data, error } = await supabase
+      .from('precos')
+      .select('*')
+      .eq('tenant_id', tenantId)
+      .eq('id_marca', marcaId)
+      .eq('categoria', categoria)
+      .eq('permanencia', permanencia)
+      .eq('periodo_semana', slug)
+      .eq('ativo', true)
+      .maybeSingle()
+
+    if (error) throw new Error(error.message)
+    return data
+  },
+
   async listFotos(tenantId: number, unidadeId: string, categoria: string): Promise<Foto[]> {
     const { data, error } = await supabase
       .from('fotos_categoria')
