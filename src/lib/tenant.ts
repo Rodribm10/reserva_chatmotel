@@ -16,7 +16,12 @@ export function resolveTenantSlug(): string {
     return defaultSlug
   }
 
-  if (host.endsWith('.trycloudflare.com') || host.endsWith('.loca.lt') || host.endsWith('.ngrok-free.dev')) {
+  if (
+    host.endsWith('.trycloudflare.com') ||
+    host.endsWith('.loca.lt') ||
+    host.endsWith('.ngrok-free.dev') ||
+    host.endsWith('.vercel.app')
+  ) {
     return defaultSlug
   }
 
