@@ -25,6 +25,12 @@ export function resolveTenantSlug(): string {
     return defaultSlug
   }
 
+  // Dominios conhecidos do Grupo 1001 usam tenant "grupo-1001" (default).
+  // Mudar aqui quando tiver multi-marca por subdominio.
+  if (host.endsWith('.hoteis1001noites.com.br')) {
+    return defaultSlug
+  }
+
   const parts = host.split('.')
   return parts[0] || defaultSlug
 }
