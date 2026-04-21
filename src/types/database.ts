@@ -249,6 +249,60 @@ export type Database = {
           },
         ]
       }
+      marca_periodos: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          dias: number[]
+          id: string
+          id_marca: string
+          nome: string
+          ordem: number
+          slug: string
+          tenant_id: number
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          dias?: number[]
+          id?: string
+          id_marca: string
+          nome: string
+          ordem?: number
+          slug: string
+          tenant_id: number
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          dias?: number[]
+          id?: string
+          id_marca?: string
+          nome?: string
+          ordem?: number
+          slug?: string
+          tenant_id?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marca_periodos_id_marca_fkey"
+            columns: ["id_marca"]
+            isOneToOne: false
+            referencedRelation: "marcas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marca_periodos_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       marcas: {
         Row: {
           ativa: boolean | null
@@ -588,6 +642,38 @@ export type Database = {
           },
         ]
       }
+      tenant_members: {
+        Row: {
+          created_at: string
+          id: number
+          role: string
+          tenant_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          role?: string
+          tenant_id: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          role?: string
+          tenant_id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenant_members_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tenants: {
         Row: {
           ativo: boolean
@@ -769,6 +855,7 @@ export type Database = {
         }
         Returns: number
       }
+      is_tenant_member: { Args: { check_tenant_id: number }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never

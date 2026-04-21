@@ -36,6 +36,12 @@ const empty: ReservationFormState = {
   observacao: '',
 }
 
+function matchCanonical(candidates: string[] | null | undefined, value: string | undefined): string | undefined {
+  if (!value) return undefined
+  if (!candidates || candidates.length === 0) return value
+  return candidates.find((c) => c.toLowerCase() === value.toLowerCase()) ?? value
+}
+
 export function useReservationForm(initialPrefill?: PrefillData) {
   const tenantId = useTenantId()
 
@@ -142,15 +148,20 @@ export function useReservationForm(initialPrefill?: PrefillData) {
       (u) => u.nome.toLowerCase() === initialPrefill.unidadeNome!.toLowerCase()
     )
     if (unidade) {
+      // Case-insensitive match contra valores canônicos da marca — o Chatwoot envia
+      // "pernoite"/"alexa" minúsculo e o DB armazena "Pernoite"/"Alexa".
+      const marca = marcas.find((m) => m.id === unidade.id_marca)
+      const canonicalPermanencia = matchCanonical(marca?.permanencias, initialPrefill.permanencia)
+      const canonicalCategoria = matchCanonical(marca?.categorias, initialPrefill.categoria)
       setForm((prev) => ({
         ...prev,
         unidadeId: unidade.id,
-        permanencia: initialPrefill.permanencia ?? prev.permanencia,
-        categoria: initialPrefill.categoria ?? prev.categoria,
+        permanencia: canonicalPermanencia ?? prev.permanencia,
+        categoria: canonicalCategoria ?? prev.categoria,
       }))
     }
     unidadePrefillAppliedRef.current = true
-  }, [unidades, initialPrefill])
+  }, [unidades, marcas, initialPrefill])
 
   const update = useCallback(<K extends keyof ReservationFormState>(
     key: K,

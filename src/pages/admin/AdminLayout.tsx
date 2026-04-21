@@ -12,6 +12,7 @@ const TABS = [
   { to: 'fotos', label: 'Fotos' },
   { to: 'extras', label: 'Extras' },
   { to: 'reservas', label: 'Reservas' },
+  { to: 'roleta', label: 'Roleta' },
 ]
 
 export function AdminLayout() {

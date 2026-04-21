@@ -68,4 +68,13 @@ export const chatwootApi = {
   getStatus(id: number): Promise<StatusResponse> {
     return request(`/public/api/v1/captain/public_reservations/${id}/status`)
   },
+
+  // Avisa o Chatwoot que o cliente revelou o prêmio da roleta.
+  // Idempotente no backend (claim atômico). Fire-and-forget no front.
+  notifyRouletteResult(token: string): Promise<{ enqueued: boolean }> {
+    return request('/api/v1/captain/roleta/notify', {
+      method: 'POST',
+      body: JSON.stringify({ token }),
+    })
+  },
 }
