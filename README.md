@@ -198,3 +198,4 @@ Passos resumidos:
 - **Plano Fase 2+3 (backend + fluxo)**: `chatwoot/docs/superpowers/plans/2026-04-13-reserva-1001-fase-2-3-fluxo-completo.md`
 - **Plano Fase 3.5 (Jasmine prefill)**: `chatwoot/docs/superpowers/plans/2026-04-14-reserva-1001-fase-3-5-angelina-prefill.md`
 - **Plano Fase 4 (multi-tenant + admin)**: `chatwoot/docs/superpowers/plans/2026-04-14-reserva-1001-fase-4-multitenant-admin.md`
+<!-- teste de fluxo Kilo-Oracle apos upgrade v0.1.27 -->
