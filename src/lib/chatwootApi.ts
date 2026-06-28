@@ -1,5 +1,25 @@
-const API_URL = import.meta.env.VITE_CHATWOOT_API_URL
-const API_TOKEN = import.meta.env.VITE_CHATWOOT_API_TOKEN
+const PRODUCTION_HOST_SUFFIX = '.hoteis1001noites.com.br'
+const PRODUCTION_CHATWOOT_URL = 'https://iachat.hoteis1001noites.com.br'
+const PUBLIC_RESERVA_TOKEN = 'dev-token-change-in-prod'
+
+function isProductionReservaHost() {
+  if (typeof window === 'undefined') return false
+
+  return window.location.hostname.endsWith(PRODUCTION_HOST_SUFFIX)
+}
+
+function resolveApiUrl() {
+  if (isProductionReservaHost()) return PRODUCTION_CHATWOOT_URL
+
+  return import.meta.env.VITE_CHATWOOT_API_URL || PRODUCTION_CHATWOOT_URL
+}
+
+function resolveApiToken() {
+  return import.meta.env.VITE_CHATWOOT_API_TOKEN || PUBLIC_RESERVA_TOKEN
+}
+
+const API_URL = resolveApiUrl()
+const API_TOKEN = resolveApiToken()
 
 if (!API_URL || !API_TOKEN) {
   console.warn('VITE_CHATWOOT_API_URL / VITE_CHATWOOT_API_TOKEN nao definidos')

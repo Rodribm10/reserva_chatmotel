@@ -6,7 +6,7 @@ import { formatBRL } from '@/lib/formatters'
 
 type Reserva = Database['reserva_hotel']['Tables']['reservas']['Row']
 
-const CHATWOOT_URL = import.meta.env.VITE_CHATWOOT_API_URL || ''
+const CHATWOOT_URL = 'https://iachat.hoteis1001noites.com.br'
 
 export function ReservasTab() {
   const { rows, loading, error } = useCrud<Reserva>('reservas', {
